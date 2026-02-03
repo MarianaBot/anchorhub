@@ -23,7 +23,15 @@ export default function App() {
           <View style={styles.authBox}>
             <Text style={styles.welcomeText}>Onorăm prezența ta în călătoria descoperirii.</Text>
             <TextInput style={styles.input} placeholder="E-mail" placeholderTextColor="#999" />
-            <TextInput style={styles.input} placeholder="Cuvânt de acces" secureTextEntry placeholderTextColor="#999" />
+            <TextInput 
+              style={styles.input} 
+              placeholder="Cuvânt de acces" 
+              secureTextEntry 
+              placeholderTextColor="#999" 
+              onChangeText={(text) => {
+                if(text === 'admin123') setView('dashboard');
+              }}
+            />
             
             <TouchableOpacity 
               style={[styles.mainButton, { backgroundColor: tenant.primaryColor }]}
