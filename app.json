@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "d147b5c3-67fb-4d65-8a64-7c911de6ab70"
+      }
+    },
+    "android": {
+      "package": "com.traia.anchorahubbase"
+    }
+  }
+}

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anchorahub - Multi-Tenant Bento System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0F172A;
+            --accent: #3B82F6;
+            --glass: rgba(255, 255, 255, 0.8);
+            --bento-bg: #F8FAFC;
+        }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #000;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #phone-shell {
+            width: 380px;
+            height: 800px;
+            background: #fff;
+            border: 12px solid #1e1e1e;
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: #1e1e1e;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 100;
+        }
+        .screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            padding: 24px;
+            padding-top: 50px;
+            background: var(--bento-bg);
+            overflow-y: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .screen.active {
+            display: flex;
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .bento-card {
+            background: white;
+            border-radius: 24px;
+            padding: 16px;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bento-card:active {
+            transform: scale(0.96);
+        }
+        .col-span-2 { grid-column: span 2; }
+        .row-span-2 { grid-row: span 2; }
+        
+        /* Custom UI Elements */
+        .glass-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            height: 64px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 50;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+        }
+        .nav-item {
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .nav-item.active {
+            color: var(--accent);
+        }
+        .btn-action {
+            background: var(--primary);
+            color: white;
+            padding: 14px;
+            border-radius: 16px;
+            font-weight: 600;
+            text-align: center;
+            width: 100%;
+        }
+        .input-bento {
+            background: #f1f5f9;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 12px;
+            width: 100%;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+        .color-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .color-dot.active { border-color: #000; }
+        
+        /* Calendar Styles */
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            border-radius: 8px;
+        }
+        .calendar-day.event {
+            background: #dbeafe;
+            color: #1e40af;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="phone-shell">
+        <div class="notch"></div>
+
+        <!-- 1. ADMIN DASHBOARD -->
+        <div id="screen-admin-dash" class="screen active">
+            <header class="mb-6 flex justify-between items-center">
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Control Panel</p>
+                    <h1 class="text-2xl font-extrabold text-slate-900">Admin Hub</h1>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden" onclick="showScreen('screen-admin-settings')">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin" alt="avatar">
+                </div>
+            </header>
+
+            <div class="bento-grid">
+                <div class="bento-card col-span-2 bg-slate-900 text-white flex justify-between items-center">
+                    <div>
+                        <p class="text-slate-400 text-xs">Total Venituri</p>
+                        <p class="text-2xl font-bold">€12,450.00</p>
+                    </div>
+                    <div class="text-emerald-400 font-bold">+12%</div>
+                </div>
+                <div class="bento-card cursor-pointer" onclick="showScreen('screen-brand')">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Design</p>
+                    <p class="text-sm font-bold">Customizare Brand</p>
+                </div>
+                <div class="bento-card cursor-pointer" onclick="showScreen('screen-calendar')">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Events</p>
+                    <p class="text-sm font-bold">Calendar Lansări</p>
+                </div>
+                <div class="bento-card col-span-2">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Utilizatori Activi</p>
+                    <div class="flex -space-x-2">
+                        <img src="https://i.pravatar.cc/150?u=1" class="w-8 h-8 rounded-full border-2 border-white">
+                        <img src="https://i.pravatar.cc/150?u=2" class="w-8 h-8 rounded-full border-2 border-white">
+                        <img src="https://i.pravatar.cc/150?u=3" class="w-8 h-8 rounded-full border-2 border-white">
+                        <div class="w-8 h-8 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-[10px] font-bold">+42</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn-action mt-auto mb-20" onclick="showScreen('screen-user-dash')">COMUTĂ PE MOD UTILIZATOR</button>
+        </div>
+
+        <!-- 2. SETĂRI PROFIL ADMIN -->
+        <div id="screen-admin-settings" class="screen">
+            <div class="flex items-center mb-6">
+                <button onclick="showScreen('screen-admin-dash')" class="mr-4 text-slate-400">←</button>
+                <h1 class="text-xl font-bold">Setări Profil</h1>
+            </div>
+
+            <div class="bento-card col-span-2 mb-4">
+                <p class="text-xs font-bold text-slate-400 uppercase mb-4">Date Facturare</p>
+                <label class="text-[10px] font-bold text-slate-500">CUI / CIF</label>
+                <input type="text" class="input-bento mb-3" value="RO12345678">
+                <label class="text-[10px] font-bold text-slate-500">Adresă Sediu</label>
+                <input type="text" class="input-bento" value="Str. Inovării Nr. 1, Cluj-Napoca">
+            </div>
+
+            <div class="bento-card col-span-2">
+                <p class="text-xs font-bold text-slate-400 uppercase mb-4">Securitate</p>
+                <label class="text-[10px] font-bold text-slate-500">Parolă Nouă</label>
+                <input type="password" class="input-bento mb-3" placeholder="••••••••">
+                <button class="btn-action bg-slate-200 !text-slate-900 text-sm">Actualizează Parola</button>
+            </div>
+        </div>
+
+        <!-- 3. CUSTOMIZARE BRAND (THE GRID) -->
+        <div id="screen-brand" class="screen">
+            <div class="flex items-center mb-6">
+                <button onclick="showScreen('screen-admin-dash')" class="mr-4 text-slate-400">←</button>
+                <h1 class="text-xl font-bold">The Grid: Branding</h1>
+            </div>
+
+            <div class="bento-grid">
+                <div class="bento-card col-span-2">
+                    <p class="text-xs font-bold text-slate-400 uppercase mb-4">Paletă Culori</p>
+                    <div class="flex space-x-3">
+                        <div class="color-dot active bg-blue-600" onclick="setAccent('#2563eb')"></div>
+                        <div class="color-dot bg-purple-600" onclick="setAccent('#9333ea')"></div>
+                        <div class="color-dot bg-emerald-600" onclick="setAccent('#059669')"></div>
+                        <div class="color-dot bg-slate-900" onclick="setAccent('#0f172a')"></div>
+                    </div>
+                </div>
+
+                <div class="bento-card row-span-2">
+                    <p class="text-xs font-bold text-slate-400 uppercase mb-4">Logo</p>
+                    <div class="aspect-square bg-slate-100 rounded-xl flex items-center justify-center border-2 border-dashed border-slate-300">
+                        <span class="text-3xl">⚓</span>
+                    </div>
+                </div>
+
+                <div class="bento-card">
+                    <p class="text-xs font-bold text-slate-400 uppercase mb-4">Banner</p>
+                    <div class="h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg"></div>
+                </div>
+                
+                <div class="bento-card">
+                    <p class="text-xs font-bold text-slate-400 uppercase mb-2">Mod</p>
+                    <div class="text-xs font-bold text-slate-900">Glassmorphism v2</div>
+                </div>
+            </div>
+            
+            <button class="btn-action mt-auto mb-20">SALVEAZĂ DESIGN-UL</button>
+        </div>
+
+        <!-- 4. CALENDAR EVENIMENTE -->
+        <div id="screen-calendar" class="screen">
+            <div class="flex items-center mb-6">
+                <button onclick="showScreen('screen-admin-dash')" class="mr-4 text-slate-400">←</button>
+                <h1 class="text-xl font-bold">Lansări & Notificări</h1>
+            </div>
+
+            <div class="bento-card mb-4">
+                <div class="grid grid-cols-7 gap-1 mb-4">
+                    <div class="text-[8px] text-center font-bold text-slate-400">L</div>
+                    <div class="text-[8px] text-center font-bold text-slate-400">M</div>
+                    <div class="text-[8px] text-center font-bold text-slate-400">M</div>
+                    <div class="text-[8px] text-center font-bold text-slate-400">J</div>
+                    <div class="text-[8px] text-center font-bold text-slate-400">V</div>
+                    <div class="text-[8px] text-center font-bold text-slate-400">S</div>
+                    <div class="text-[8px] text-center font-bold text-slate-400">D</div>
+                    <div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div>
+                    <div class="calendar-day event">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div>
+                </div>
+                <p class="text-xs font-bold"><span class="text-blue-500">●</span> Lansare Modul Masterclass</p>
+                <p class="text-[10px] text-slate-400">Februarie 04, 2026</p>
+            </div>
+
+            <div class="bento-card col-span-2">
+                <p class="text-xs font-bold text-slate-400 uppercase mb-4">Automatizare E-mail</p>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm font-medium">Notificare Lansare</span>
+                    <div class="w-10 h-5 bg-blue-600 rounded-full flex items-center justify-end px-1">
+                        <div class="w-3 h-3 bg-white rounded-full"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium">Reminder Z-1</span>
+                    <div class="w-10 h-5 bg-slate-200 rounded-full flex items-center justify-start px-1">
+                        <div class="w-3 h-3 bg-white rounded-full shadow-sm"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. USER DASHBOARD (STUDENT) -->
+        <div id="screen-user-dash" class="screen">
+            <header class="mb-6 flex justify-between items-center">
+                <div>
+                    <p class="text-xs font-bold text-blue-500 uppercase tracking-widest">Bine ai revenit,</p>
+                    <h1 class="text-2xl font-extrabold text-slate-900">Alex Popescu</h1>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden" onclick="showScreen('screen-user-settings')">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="avatar">
+                </div>
+            </header>
+
+            <div class="bento-grid">
+                <div class="bento-card col-span-2 bg-gradient-to-br from-blue-600 to-indigo-700 text-white relative overflow-hidden">
+                    <div class="relative z-10">
+                        <p class="text-blue-100 text-xs">Cursul curent</p>
+                        <p class="text-lg font-bold mb-2">Mastering The Grid</p>
+                        <div class="w-full bg-white/20 h-1.5 rounded-full">
+                            <div class="bg-white w-[65%] h-full rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="absolute -right-4 -bottom-4 opacity-20 text-6xl font-bold italic">BENTO</div>
+                </div>
+                
+                <div class="bento-card cursor-pointer" onclick="showScreen('screen-user-calendar')">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Program</p>
+                    <p class="text-sm font-bold">Următoarea Sesiune</p>
+                    <p class="text-[10px] text-blue-500 font-bold mt-1">Mâine, 18:00</p>
+                </div>
+                
+                <div class="bento-card">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Resurse</p>
+                    <p class="text-sm font-bold">12 Fișiere Noi</p>
+                </div>
+
+                <div class="bento-card col-span-2">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-3">Comunitate</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex -space-x-2">
+                            <img src="https://i.pravatar.cc/150?u=a" class="w-6 h-6 rounded-full border-2 border-white">
+                            <img src="https://i.pravatar.cc/150?u=b" class="w-6 h-6 rounded-full border-2 border-white">
+                        </div>
+                        <span class="text-xs text-slate-600">+3 discuții noi astăzi</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn-action mt-auto mb-20 bg-slate-100 !text-slate-400" onclick="showScreen('screen-admin-dash')">ACCES ADMIN (DEMO)</button>
+        </div>
+
+        <!-- 6. USER SETTINGS (MULTITENANT) -->
+        <div id="screen-user-settings" class="screen">
+            <div class="flex items-center mb-6">
+                <button onclick="showScreen('screen-user-dash')" class="mr-4 text-slate-400">←</button>
+                <h1 class="text-xl font-bold">Profilul Meu</h1>
+            </div>
+
+            <div class="bento-card mb-4 flex flex-col items-center py-8">
+                <div class="w-24 h-24 rounded-full border-4 border-blue-500 p-1 mb-4">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" class="w-full h-full rounded-full">
+                </div>
+                <h2 class="font-bold text-lg">Alex Popescu</h2>
+                <p class="text-slate-400 text-sm">Student Premium</p>
+            </div>
+
+            <div class="bento-card">
+                <p class="text-xs font-bold text-slate-400 uppercase mb-4">Preferințe Cont</p>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-sm">Notificări Push</span>
+                    <div class="w-8 h-4 bg-blue-600 rounded-full"></div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm">Dark Mode</span>
+                    <div class="w-8 h-4 bg-slate-200 rounded-full"></div>
+                </div>
+            </div>
+            
+            <button class="btn-action mt-6 bg-red-50 !text-red-500">DECONECTARE</button>
+        </div>
+
+        <!-- 7. USER CALENDAR (NOTIFICATIONS) -->
+        <div id="screen-user-calendar" class="screen">
+            <div class="flex items-center mb-6">
+                <button onclick="showScreen('screen-user-dash')" class="mr-4 text-slate-400">←</button>
+                <h1 class="text-xl font-bold">Agenda Mea</h1>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bento-card border-l-4 border-blue-500">
+                    <p class="text-[10px] font-bold text-blue-500">MÂINE • 18:00</p>
+                    <p class="font-bold">Webinar Live: Structura Bento</p>
+                    <p class="text-xs text-slate-500 mt-1">Cu: Expert Design Anchorahub</p>
+                </div>
+                
+                <div class="bento-card border-l-4 border-slate-200">
+                    <p class="text-[10px] font-bold text-slate-400">10 FEBRUARIE</p>
+                    <p class="font-bold">Lansare Modul: UX Psychology</p>
+                </div>
+                
+                <div class="bento-card bg-slate-900 text-white">
+                    <p class="text-xs">Ai activat notificările pe e-mail pentru toate evenimentele din această lună.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="glass-nav">
+            <div class="nav-item active" onclick="showScreen(currentType === 'admin' ? 'screen-admin-dash' : 'screen-user-dash')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+            </div>
+            <div class="nav-item" onclick="showScreen(currentType === 'admin' ? 'screen-calendar' : 'screen-user-calendar')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <div class="nav-item" onclick="showScreen(currentType === 'admin' ? 'screen-admin-settings' : 'screen-user-settings')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentType = 'admin';
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(id);
+            target.classList.add('active');
+            
+            // Update current type based on screen ID
+            if (id.includes('user')) {
+                currentType = 'user';
+            } else if (id.includes('admin')) {
+                currentType = 'admin';
+            }
+
+            // Update nav active state
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(i => i.classList.remove('active'));
+            
+            if (id.includes('dash')) navItems[0].classList.add('active');
+            if (id.includes('calendar')) navItems[1].classList.add('active');
+            if (id.includes('settings')) navItems[2].classList.add('active');
+        }
+
+        function setAccent(color) {
+            document.documentElement.style.setProperty('--accent', color);
+            document.querySelectorAll('.color-dot').forEach(d => {
+                d.classList.remove('active');
+                if (rgbToHex(d.style.backgroundColor) === color.toLowerCase()) {
+                    d.classList.add('active');
+                }
+            });
+        }
+
+        function rgbToHex(rgb) {
+            if (!rgb) return '';
+            const vals = rgb.match(/\d+/g);
+            return "#" + vals.map(x => {
+                const hex = parseInt(x).toString(16);
+                return hex.length === 1 ? "0" + hex : hex;
+            }).join("");
+        }
+    </script>
+</body>
+</html>

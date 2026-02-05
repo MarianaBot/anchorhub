@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnchorahubBase - LIVE APP</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f7f9; color: #333; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        #app-container { width: 375px; height: 667px; background: white; border: 10px solid #2c3e50; border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .screen { flex: 1; display: none; flex-direction: column; padding: 20px; }
+        .screen.active { display: flex; }
+        
+        /* Elements */
+        .header { width: 100%; height: 140px; background: #2c3e50; display: flex; align-items: center; justify-content: center; position: relative; margin: -20px -20px 20px -20px; width: calc(100% + 40px); }
+        .grid-num { position: absolute; font-size: 80px; font-weight: bold; color: rgba(255,255,255,0.05); }
+        .brand { color: white; font-size: 20px; font-weight: bold; z-index: 1; }
+        
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .btn { padding: 15px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; text-align: center; margin-bottom: 10px; }
+        .btn-primary { background: #2c3e50; color: white; }
+        .btn-nav { background: #f1f1f1; color: #2c3e50; text-align: left; }
+        
+        .input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .stat-box { background: #eef7ff; padding: 15px; border-radius: 12px; border-left: 4px solid #3498db; margin-bottom: 20px; }
+        .cnv-msg { background: #fffbe6; padding: 15px; border: 1px dashed #ffe58f; border-radius: 10px; font-size: 13px; font-style: italic; line-height: 1.5; }
+        h2 { font-size: 20px; margin: 0 0 20px 0; color: #2c3e50; }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- LOGIN SCREEN -->
+        <div id="screen-login" class="screen active">
+            <div class="header"><div class="grid-num">1</div><div class="brand">⚓ AnchorahubBase</div></div>
+            <p style="text-align: center; font-style: italic; color: #666; margin-bottom: 30px;">Onorăm prezența ta în călătoria descoperirii.</p>
+            <input type="text" class="input" placeholder="E-mail">
+            <input type="password" id="pass" class="input" placeholder="Parolă">
+            <button class="btn btn-primary" onclick="checkLogin()">PĂȘEȘTE ÎNĂUNTRU ✨</button>
+            <p id="error" style="color: red; font-size: 12px; text-align: center; display: none;">Acces refuzat. Încearcă din nou.</p>
+        </div>
+
+        <!-- DASHBOARD SCREEN -->
+        <div id="screen-dash" class="screen">
+            <h2>Puntea de Comandă</h2>
+            <div class="stat-box">
+                <div style="font-size: 10px; color: #3498db; font-weight: bold;">ÎNCASĂRI TOTALE:</div>
+                <div style="font-size: 24px; font-weight: bold;">1.250 RON</div>
+            </div>
+            <button class="btn btn-nav" onclick="showScreen('screen-courses')">📂 GESTIONARE CURSURI</button>
+            <button class="btn btn-nav" onclick="showScreen('screen-cnv')">💬 MOTOR RETENȚIE CNV</button>
+            <button class="btn btn-primary" onclick="showScreen('screen-login')" style="margin-top: auto; background: #e74c3c;">DECONECTARE</button>
+        </div>
+
+        <!-- COURSES SCREEN -->
+        <div id="screen-courses" class="screen">
+            <h2>Gestiune Cursuri</h2>
+            <div class="card">
+                <strong>Arta Conexiunii</strong><br>
+                <span style="font-size: 12px; color: #777;">5 Module | Layout Rigid Actic</span>
+            </div>
+            <button class="btn btn-primary" style="background: #27ae60;">+ ADAUGĂ CURS NOU</button>
+            <button class="btn btn-nav" onclick="showScreen('screen-dash')" style="margin-top: auto;">← ÎNAPOI</button>
+        </div>
+
+        <!-- CNV SCREEN -->
+        <div id="screen-cnv" class="screen">
+            <h2>Notificări Retenție</h2>
+            <div class="cnv-msg">
+                <strong>Z-15 Mesaj Expirare:</strong><br>
+                "Cu drag te anunțăm că mai sunt 15 zile până ajutorul tău va fi vital pentru a continua această minunată călătorie..."
+            </div>
+            <button class="btn btn-primary" style="margin-top: 20px; background: #e67e22;">EDITEAZĂ MESAJ NLP</button>
+            <button class="btn btn-nav" onclick="showScreen('screen-dash')" style="margin-top: auto;">← ÎNAPOI</button>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function checkLogin() {
+            const pass = document.getElementById('pass').value;
+            if (pass === 'admin123') {
+                showScreen('screen-dash');
+            } else {
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
