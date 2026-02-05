@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnchorahubBase - Prezentare Vizuală</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f0f2f5; color: #333; }
+        .screen { width: 375px; height: 667px; background: white; margin: 40px auto; border: 12px solid #333; border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+        .label { text-align: center; font-weight: bold; font-size: 1.2rem; color: #2c3e50; margin-top: 20px; }
+        
+        /* Elements from Layout Rigid & Grid System */
+        .header { width: 100%; height: 180px; background: #2c3e50; display: flex; align-items: center; justify-content: center; position: relative; border-radius: 0 0 30px 30px; }
+        .grid-bg { position: absolute; font-size: 120px; font-weight: bold; color: rgba(255,255,255,0.05); z-index: 0; }
+        .brand-title { color: white; font-size: 24px; font-weight: bold; z-index: 1; letter-spacing: 1px; }
+        
+        .content { padding: 30px; text-align: center; }
+        .welcome-text { font-style: italic; color: #555; line-height: 1.6; margin-bottom: 40px; }
+        .input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 18px; background: #2c3e50; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; }
+        
+        .stat-card { background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 5px solid #2ecc71; text-align: left; margin-bottom: 20px; }
+        .stat-val { font-size: 24px; font-weight: bold; color: #2c3e50; }
+        .stat-label { font-size: 12px; color: #7f8c8d; text-transform: uppercase; }
+
+        .cnv-box { background: #eef7ff; padding: 20px; border-radius: 15px; border: 1px dashed #3498db; text-align: left; margin-top: 20px; }
+        .cnv-title { font-size: 11px; font-weight: bold; color: #3498db; margin-bottom: 8px; }
+        .cnv-text { font-size: 13px; line-height: 1.5; color: #2c3e50; }
+    </style>
+</head>
+<body>
+
+    <div class="label">PAGINA 1: LOGIN (CONEXIUNE EMPATICĂ)</div>
+    <div class="screen">
+        <div class="header">
+            <div class="grid-bg">1</div>
+            <div class="brand-title">⚓ AnchorahubBase</div>
+        </div>
+        <div class="content">
+            <p class="welcome-text">Onorăm prezența ta în călătoria descoperirii. Pășește înăuntru pentru a continua.</p>
+            <input type="text" class="input" placeholder="E-mailul tău">
+            <input type="password" class="input" placeholder="Cuvântul de acces">
+            <button class="btn">PĂȘEȘTE ÎNĂUNTRU ✨</button>
+        </div>
+    </div>
+
+    <div class="label">PAGINA 2: DASHBOARD (ADMINISTRARE RIGIDĂ)</div>
+    <div class="screen">
+        <div style="padding: 20px; padding-top: 40px;">
+            <h2 style="color: #2c3e50; margin-bottom: 30px;">Puntea de Comandă</h2>
+            
+            <div class="stat-card">
+                <div class="stat-label">Încasări Totale</div>
+                <div class="stat-val">1.250 RON</div>
+            </div>
+
+            <div style="background: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; border: 1px solid #eee;">
+                <div style="font-weight: bold;">Curs: Arta Conexiunii</div>
+                <div style="font-size: 12px; color: #777;">5 Module | 3 Abonați</div>
+            </div>
+
+            <div class="cnv-box">
+                <div class="cnv-title">NOTIFICARE RETENȚIE (NLP/CNV):</div>
+                <div class="cnv-text">"Cu drag te anunțăm că mai sunt 15 zile până ajutorul tău va fi vital pentru a continua această călătorie..."</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

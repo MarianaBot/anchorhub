@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>AnchorahubBase - Ecosistem Complet 100%</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f0f2f5; color: #333; padding: 20px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 40px; justify-items: center; }
+        .screen { width: 375px; height: 667px; background: white; border: 10px solid #2c3e50; border-radius: 40px; overflow-y: auto; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .label { font-weight: bold; font-size: 1.2rem; color: #2c3e50; margin-bottom: 10px; text-align: center; }
+        
+        /* Elements */
+        .header { width: 100%; height: 140px; background: #2c3e50; display: flex; align-items: center; justify-content: center; position: relative; }
+        .grid-num { position: absolute; font-size: 100px; font-weight: bold; color: rgba(255,255,255,0.05); }
+        .brand { color: white; font-size: 20px; font-weight: bold; z-index: 1; }
+        .content { padding: 20px; }
+        .input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 10px; font-weight: bold; margin-bottom: 10px; }
+        .card { background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 15px; }
+        .stat-box { background: #eef7ff; padding: 15px; border-radius: 12px; border-left: 4px solid #3498db; margin-bottom: 20px; }
+        .cnv-preview { background: #fffbe6; padding: 15px; border: 1px dashed #ffe58f; border-radius: 10px; font-size: 13px; font-style: italic; }
+        h3 { font-size: 16px; margin: 0 0 10px 0; color: #2c3e50; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; margin-bottom: 50px;">⚓ AnchorahubBase - Livrare Integrală (Fapte 100%)</h1>
+    
+    <div class="grid-container">
+        <!-- 1. LOGIN -->
+        <div>
+            <div class="label">1. LOGIN (CONEXIUNE)</div>
+            <div class="screen">
+                <div class="header"><div class="grid-num">1</div><div class="brand">⚓ AnchorahubBase</div></div>
+                <div class="content">
+                    <p style="text-align: center; font-style: italic; font-size: 14px; margin-bottom: 30px;">"Onorăm prezența ta în călătoria descoperirii."</p>
+                    <input type="text" class="input" placeholder="E-mail">
+                    <input type="password" class="input" placeholder="Parolă">
+                    <button class="btn">PĂȘEȘTE ÎNĂUNTRU ✨</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. DASHBOARD -->
+        <div>
+            <div class="label">2. DASHBOARD (CONTROL)</div>
+            <div class="screen">
+                <div style="padding: 20px; background: #2c3e50; color: white; border-radius: 0 0 20px 20px;">
+                    <div style="font-size: 18px; font-weight: bold;">Puntea de Comandă</div>
+                </div>
+                <div class="content">
+                    <div class="stat-box">
+                        <div style="font-size: 10px; color: #3498db; font-weight: bold;">LIFETIME VALUE (LTV)</div>
+                        <div style="font-size: 24px; font-weight: bold;">1.250 RON</div>
+                    </div>
+                    <h3>Cursuri Active</h3>
+                    <div class="card">
+                        <strong>Arta Conexiunii</strong><br><span style="font-size: 12px; color: #666;">5 Module | 3 Cursanți</span>
+                        <button class="btn" style="margin-top: 10px; padding: 8px; font-size: 12px; background: #f1f1f1; color: #2c3e50;">GESTIONEAZĂ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. CURSURI -->
+        <div>
+            <div class="label">3. MANAGEMENT CURSURI</div>
+            <div class="screen">
+                <div class="content" style="padding-top: 40px;">
+                    <h3>Editare: Arta Conexiunii</h3>
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">
+                            <span>M1: Intro NLP</span><span style="color: green; font-weight: bold;">GRATUIT</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                            <span>M2: Tehnici CNV</span><span style="color: red; font-weight: bold;">120 RON</span>
+                        </div>
+                    </div>
+                    <button class="btn" style="background: #27ae60;">+ ADAUGĂ MODUL NOU</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. MODULE -->
+        <div>
+            <div class="label">4. DETALII MODUL</div>
+            <div class="screen">
+                <div class="content" style="padding-top: 40px;">
+                    <div style="background: #eee; height: 150px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                        <span style="font-size: 40px;">📽️</span>
+                    </div>
+                    <h3>Modul 2: Tehnici CNV</h3>
+                    <p style="font-size: 13px; color: #666;">Învață să onorezi nevoile prin limbaj.</p>
+                    <div class="card">📄 documentatie.pdf</div>
+                    <button class="btn" style="background: #3498db;">EDITARE CONȚINUT</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. NOTIFICĂRI -->
+        <div>
+            <div class="label">5. MOTOR RETENȚIE (CNV)</div>
+            <div class="screen">
+                <div class="content" style="padding-top: 40px;">
+                    <h3>Configurare Notificări</h3>
+                    <div class="cnv-preview">
+                        <strong>Z-15 Expirare:</strong><br>
+                        "Cu drag te anunțăm că mai sunt 15 zile până ajutorul tău va fi vital pentru a continua această minunată călătorie..."
+                    </div>
+                    <button class="btn" style="margin-top: 20px; background: #e67e22;">ACTUALIZEAZĂ MESAJ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. COMENZI -->
+        <div>
+            <div class="label">6. ISTORIC COMENZI</div>
+            <div class="screen">
+                <div class="content" style="padding-top: 40px;">
+                    <h3>Tranzacții Recente</h3>
+                    <div class="card" style="border-left: 4px solid #2ecc71;">
+                        <div style="font-size: 14px;"><strong>#102 - 120 RON</strong></div>
+                        <div style="font-size: 11px; color: #666;">User: maria@email.com - ACHITAT</div>
+                    </div>
+                    <div class="card" style="border-left: 4px solid #e74c3c;">
+                        <div style="font-size: 14px;"><strong>#101 - 50 RON</strong></div>
+                        <div style="font-size: 11px; color: #666;">User: dan@email.com - PENDING</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
